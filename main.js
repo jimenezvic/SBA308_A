@@ -1,6 +1,6 @@
 const fetchArtistsBtn = document.getElementById('fetchArtistsBtn');
 const artistContainer = document.getElementById('artistContainer');
-const apiUrl = 'https://collectionapi.metmuseum.org/public/collection/v1/objects';
+const apiUrl = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/[objectID]';
 
 const displayArtistDetails = async () => {
     try {
