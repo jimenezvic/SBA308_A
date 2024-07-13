@@ -1,57 +1,107 @@
-    const fetchArtistsBtn = document.getElementById('fetchArtistsBtn');
-        const artistContainer = document.getElementById('artistContainer');
-        const apiUrl = 'https://collectionapi.metmuseum.org/public/collection/v1/objects';
+const API_URL = `https://api.artic.edu/api/v1/artworks?q=artist_id`;
 
-        const displayArtistDetails = async () => {
-            try {
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch data');
-                }
-                const data = await response.json();
+function constructIIIFImageUrl(imageId) {
+    const baseUrl = 'https://www.artic.edu/iiif/2/';
+    const region = 'full';
+    const size = 'full';
+    const rotation = '0';
+    const quality = 'default';
+    const format = 'jpg';
+    console.log("image ID", imageId);
+    return `${baseUrl}${imageId}/${region}/${size}/${rotation}/${quality}.${format}`;
+}
 
-                artistContainer.innerHTML = '';
+// Functions for the Slider
+let slideIndex = 0;
 
-                const objectIds = data.objectIDs.slice(0, 15); // Limiting to first 15 objects for example
-                for (const objectId of objectIds) {
-                    try {
-                        const objResponse = await fetch(`${apiUrl}/${objectId}`);
-                        if (!objResponse.ok) {
-                            throw new Error(`Failed to fetch object with ID: ${objectId}`);
-                        }
-                        const objData = await objResponse.json();
-                        
-                        const artistName = objData.artistDisplayName || 'Unknown';
-                        const artistBio = objData.artistDisplayBio || 'No biography available';
-                        const artistImages = objData.additionalImages || [];
+function showSlide(index) {
+    const slides = document.querySelectorAll('.slide');
+    slides.forEach(slide => {
+        slide.style.display = 'none';
+    });
 
-                        const artistDiv = document.createElement('div');
-                        artistDiv.classList.add('artistDetails');
-                        artistDiv.innerHTML = `
-                            <h3>${artistName}</h3>
-                            <h5>${artistBio}</h5>
-                        `;
+    if (index >= slides.length) {
+        slideIndex = 0;
+    } else if (index < 0) {
+        slideIndex = slides.length - 1;
+    } else {
+        slideIndex = index;
+    }
 
-                        if (artistImages.length > 0) {
-                            artistImages.forEach(imageUrl => {
-                                const imgEl = document.createElement('img');
-                                imgEl.src = imageUrl;
-                                imgEl.alt = `${artistName} images`;
-                                imgEl.width = 200;
-                                artistDiv.appendChild(imgEl);
-                            });
-                        } else {
-                            artistDiv.innerHTML += '<p>No images available</p>';
-                    
+    slides[slideIndex].style.display = 'flex';
+}
 
-                        artistContainer.appendChild(artistDiv);
-                    } catch (error) {
-                        console.error(`Error fetching object details for ID: ${objectId}`, error);
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
+function prevSlide() {
+    slideIndex--;
+    showSlide(slideIndex);
+}
+
+function nextSlide() {
+    slideIndex++;
+    showSlide(slideIndex);
+}
+
+// Fetching data from API
+function getEuropeanaImages() {
+    fetch(API_URL)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('There was a problem with your fetch operation: ' + res.statusText);
             }
-        };
+            return res.json();
+        })
+        .then(data => {
+            const artworks = data.data;
+            const slideContainer = document.querySelector('.slides');
+            const slider = document.querySelector('.slider');
 
-        fetchArtistsBtn.addEventListener('click', displayArtistDetails);
+            const btn1 = document.createElement('button');
+            const btn2 = document.createElement('button');
+
+            btn1.classList.add('prev');
+            btn2.classList.add('next');
+
+            btn1.innerHTML = '&#10094';
+            btn2.innerHTML = '&#10095';
+
+            btn1.onclick = prevSlide;
+            btn2.onclick = nextSlide;
+
+            artworks.forEach(artwork => {
+                const { title, image_id, description } = artwork;
+
+                if (image_id) {
+                    const imageUrl = constructIIIFImageUrl(image_id);
+
+                    // Create slide container
+                    const slide = document.createElement('div');
+                    slide.classList.add('slide');
+
+                    // Create image element
+                    const imgElement = document.createElement('img');
+                    imgElement.classList.add('displaySlide');
+                    imgElement.src = imageUrl;
+                    imgElement.alt = title;
+                    imgElement.style.width = '80vh'
+                    imgElement.style.height = 'auto'
+
+                    // Append elements to slide
+                    slide.appendChild(imgElement);
+                    slideContainer.appendChild(slide);
+
+                    console.log(description);
+                }
+            });
+
+            // Append navigation buttons
+            slider.appendChild(btn1);
+            slider.appendChild(btn2);
+
+            showSlide(slideIndex); // Show the first slide
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+}
+
+getEuropeanaImages();

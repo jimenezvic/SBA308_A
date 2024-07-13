@@ -3,19 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./style.css" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Arsenal+SC:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
     <title>Document</title>
 </head>
+<header class="headers">
+    <img src="./media/MUSEUM.png" alt="logo" class="logo" >
+    <nav>
+        <ul class="nav-links">
+            <li ><a href="#">Services</a></li>
+            <li ><a href="#">Projects</a></li>
+            <li ><a href="#">About</a></li>
+            
+            
+        </ul>
+    </nav>
+    <a href="#" class="cta"><button>Contact</button></a>
+
+</header>
 <body>
-    <video class="background-video" autoplay loop muted  >
-        <source  src="./media/Exhibition Tour—A New Look at Old Masters _ Met Exhibitions.mp4">
-    </video>
-    <div>
-        <div class="cont">
-            <button id="fetchArtistsBtn">You must see this at The Met</button>
+    <header id="main-header" class="header">
+        <button class="text-overlay" data-modal-target="#modal">Our Mission</button>
+    </header>
+
+    <div class="modal" id="modal">
+        <button data-close-button class="close-button">&times;</button>
+        <h2 class="lp">Our Mission</h2>
+        <p class="lp">Welcome to our website, where we bring the art and history of museums from around the USA right to your fingertips. Our mission is simple yet profound:</p>
+        <div class="modal-header">
+            <div class="title"></div>
         </div>
-        <div id="artistContainer"></div>
+        <div class="modal-body">
+            <h5 class="lp">1.
+            We strive to gather and display the most iconic and significant artworks from museums across the United States. Each visit to our site will introduce you to masterpieces and hidden gems alike.
+            </h5>
+            <h5 class="lp">
+            2.
+            Planning a museum visit? We've got you covered. Our curated selections ensure that you won't miss the must-see pieces every time you step into a museum.
+            </h5>
+            <h5 class="lp">
+            3.
+            We aim to enhance your appreciation and understanding of art through detailed descriptions and contextual information, making your museum visits more enriching and enjoyable.</h5>
+        </div>
     </div>
+    
+    <div class="slider">
+        <div class="slides"></div>
+    </div>
+    
+    <script src="./script.js"></script>
     <script src="./main.js"></script>
+    <div id="overlay"></div>
 </body>
 </html>
