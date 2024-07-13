@@ -11,7 +11,7 @@ function constructIIIFImageUrl(imageId) {
     return `${baseUrl}${imageId}/${region}/${size}/${rotation}/${quality}.${format}`;
 }
 
-// Functions for the Slider
+
 let slideIndex = 0;
 
 function showSlide(index) {
@@ -41,7 +41,7 @@ function nextSlide() {
     showSlide(slideIndex);
 }
 
-// Fetching data from API
+
 function getEuropeanaImages() {
     fetch(API_URL)
         .then(res => {
@@ -73,11 +73,11 @@ function getEuropeanaImages() {
                 if (image_id) {
                     const imageUrl = constructIIIFImageUrl(image_id);
 
-                    // Create slide container
+                    
                     const slide = document.createElement('div');
                     slide.classList.add('slide');
 
-                    // Create image element
+                    
                     const imgElement = document.createElement('img');
                     imgElement.classList.add('displaySlide');
                     imgElement.src = imageUrl;
@@ -85,7 +85,7 @@ function getEuropeanaImages() {
                     imgElement.style.width = '80vh'
                     imgElement.style.height = 'auto'
 
-                    // Append elements to slide
+                    
                     slide.appendChild(imgElement);
                     slideContainer.appendChild(slide);
 
@@ -93,11 +93,11 @@ function getEuropeanaImages() {
                 }
             });
 
-            // Append navigation buttons
+           
             slider.appendChild(btn1);
             slider.appendChild(btn2);
 
-            showSlide(slideIndex); // Show the first slide
+            showSlide(slideIndex); 
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
